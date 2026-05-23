@@ -1,0 +1,2 @@
+Always use Context7 to retrieve up-to-date documentation when working with frameworks, libraries, or APIs (such as FastAPI, SQLAlchemy, httpx, pytest).
+Automatically invoke the Context7 MCP tools without being asked whenever you need documentation or examples.
