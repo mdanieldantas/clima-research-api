@@ -51,7 +51,7 @@ este arquivo traz checklists rápidos para usar ia com segurança neste projeto.
 - [ ] levantei a api (`uvicorn src.main:app --reload` ou comando equivalente).
 - [ ] testei manualmente os endpoints afetados (ex.: via postman/insomnia):
   - [ ] cenários de sucesso (200).
-  - [ ] cenários de erro principais (400, 404, 503) com payloads de erro padronizados.
+  - [ ] cenários de erro principais (400, 404, 503) com payloads de erro padronizados (`status`, `error_code`, `message`, `details`).
 - [ ] confirmei que:
   - [ ] não quebrei endpoints existentes.
   - [ ] os testes de regressão continuam passando.

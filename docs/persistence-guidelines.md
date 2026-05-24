@@ -115,10 +115,10 @@ quando for migrar:
 ## 9. testes relacionados à persistência
 
 - testar repositórios isoladamente, usando sqlite em memória quando possível.
-- garantir que:
+  - garantir que:
   - um registro é criado corretamente ao salvar consulta.
   - consultas por cidade retornam os registros esperados.
   - a ordenação temporal funciona como esperado.
-  - casos sem histórico retornam vazio (ou geram `notfounderror` em nível de serviço, conforme design definido).
+  - casos sem histórico retornam um array vazio (`[]`) com HTTP 200 — não usar 404 para endpoints de lista.
 
 para visão geral de arquitetura, consultar `architecture-rules.md`. para padrões de rotas e erros, ver `docs/routes-guidelines.md` e `docs/error-handling.md`.

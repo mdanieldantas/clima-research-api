@@ -70,7 +70,7 @@ async def get_clima(nome_cidade: str, service: WeatherService = Depends()):
 
 - Toda rota deve declarar explicitamente `response_model` com um schema Pydantic localizado em `src/schemas/`.
 - Para rotas de lista (ex.: `/cidades/{sigla_uf}`), usar listas tipadas, ex.: `list[CidadeResponse]`.
-- Respostas de erro NUNCA devem ser HTML; devem usar o schema de erro definido em `schemas/error.py` e os handlers globais (ver `docs/ERROR_HANDLING.md`).
+ - Respostas de erro NUNCA devem ser HTML; devem usar o schema de erro definido em `schemas/error.py` e os handlers globais (ver `docs/error-handling.md`).
 
 ## 6. Códigos de status esperados
 
@@ -89,10 +89,9 @@ async def get_clima(nome_cidade: str, service: WeatherService = Depends()):
   - 404 se a UF não for encontrada.
   - 503 se a API externa estiver indisponível.
 
-- `GET /api/v1/historico/{nome_cidade}` e `/serie/{nome_cidade}`
-  - 200 com histórico ou série.
+ - `GET /api/v1/historico/{nome_cidade}` e `/serie/{nome_cidade}`
+  - 200 com histórico ou série. Se não houver registros, retornar 200 com array vazio (`[]`) para endpoints de lista.
   - 400 se `nome_cidade` inválido.
-  - 404 se não houver registros para a cidade.
   - 503 se houver falha no acesso ao banco ou serviço dependente.
 
 ## 7. Integração com serviços
@@ -134,4 +133,4 @@ deve ficar nos serviços, não na rota.
     - o payload corresponde ao schema.
     - erros (400, 404, 503) retornam JSON padronizado.
 
-Para detalhes mais gerais de arquitetura, consultar `ARCHITECTURE_RULES.md`.
+Para detalhes mais gerais de arquitetura, consultar `architecture-rules.md`.

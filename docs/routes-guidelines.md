@@ -90,9 +90,8 @@ async def get_clima(nome_cidade: str, service: WeatherService = Depends()):
   - 503 se a api externa estiver indisponível.
 
 - `get /api/v1/historico/{nome_cidade}` e `/serie/{nome_cidade}`
-  - 200 com histórico ou série.
+  - 200 com histórico ou série. Se não houver registros, retornar 200 com um array vazio (`[]`) para endpoints de lista.
   - 400 se `nome_cidade` inválido.
-  - 404 se não houver registros para a cidade.
   - 503 se houver falha no acesso ao banco ou serviço dependente.
 
 ## 7. integração com serviços
