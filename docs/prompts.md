@@ -1,198 +1,212 @@
-## Prompts para usar com Copilot (VS Code)
+Segue uma versão **nova** para o `docs/prompts.md`, já alinhada com:
 
-Use estes prompts no chat do Copilot, sempre abrindo junto os arquivos:
-- `architecture-rules.md`
-- `docs/routes-guidelines.md`
-- `docs/error-handling.md`
-- `docs/persistence-guidelines.md`
-- `docs/testing-guidelines.md`
-[file:6]
+- tlc-spec-driven (`.specs/project/*`, `.specs/features/api-pesquisa-clima/*`). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f45b5e69-c0ec-4f1f-86d7-6e132dbd647b/06f9561e-49ac-4759-a8c0-c6b75f590665/Spec-Driven-Development.txt)
+- tasks T01–T17. [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f45b5e69-c0ec-4f1f-86d7-6e132dbd647b/277e06e5-632d-4358-9e56-654b80d566e8/fluxo-COMPLETO-de-desenvolvimento-avancado-com-IA.txt)
+- uso do Context7 para docs de FastAPI/SQLAlchemy/httpx/APIs externas. [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f45b5e69-c0ec-4f1f-86d7-6e132dbd647b/277e06e5-632d-4358-9e56-654b80d566e8/fluxo-COMPLETO-de-desenvolvimento-avancado-com-IA.txt)
+- novo contrato de erro (`status`, `error_code`, `message`, `details`). [ppl-ai-file-upload.s3.amazonaws](https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/collection_f45b5e69-c0ec-4f1f-86d7-6e132dbd647b/063badb1-cc23-48fa-8c44-64100871a89c/Spec-Driven-chegou-no-limite1.txt)
 
----
+Pode substituir o conteúdo do arquivo atual por este.
 
-### 1) Criar base da API (main.py + CORS + porta 3000)
+***
 
-Quero iniciar a API de Pesquisa em Clima seguindo as especificações de `architecture-rules.md`.
+```markdown
+# Prompts para Desenvolvimento com IA — API de Pesquisa em Clima
 
-Tarefas:
-- Criar `src/main.py` com:
-  - instância FastAPI
-  - configuração de CORS liberando acesso padrão para testes (localhost)
-  - configuração para rodar na porta 3000
-  - registro de routers, mesmo que ainda só exista o de health
-- Criar estrutura mínima de pastas em `src/core/` com arquivos vazios ou esqueleto:
-  - `config.py`
-  - `database.py`
-  - `exceptions.py`
-  - `handlers.py`
+Este projeto segue **Spec-Driven Development** com a skill `tlc-spec-driven`:
 
-Regras:
-- Siga estritamente as convenções descritas em `architecture-rules.md`.
-- Não crie outras rotas além do esqueleto de health.
-- Mostre apenas o conteúdo final dos arquivos criados/alterados, em blocos separados.
+> Specify → Design → Tasks → Execute
 
----
+Os artefatos principais de especificação estão em:
 
-### 2) Criar endpoint GET /api/v1/health + teste
+- `.specs/project/PROJECT.md`, `ROADMAP.md`, `STATE.md`
+- `.specs/features/api-pesquisa-clima/spec.md`
+- `.specs/features/api-pesquisa-clima/design.md`
+- `.specs/features/api-pesquisa-clima/tasks.md`
 
-Usando `architecture-rules.md`, `docs/routes-guidelines.md` e `docs/testing-guidelines.md`, implemente o endpoint de health.
+Abaixo estão prompts **genéricos** para usar com Copilot/Claude/Cursor/Windsurf em VS Code, sempre respeitando esse fluxo.
 
-Tarefas:
-- Criar `src/api/routes/health.py` com:
-  - `APIRouter` com prefixo `/api/v1/health` e tag `"health"`.
-  - endpoint `GET /api/v1/health` que responde JSON com:
-    - `status`: `"ok"`
-    - `service`: nome da API
-    - `timestamp`: string datetime em formato ISO 8601
-- Criar `src/schemas/health.py` com o schema Pydantic correspondente à resposta.
-- Registrar o router de health em `src/main.py`.
-- Criar `tests/test_health.py` seguindo `docs/testing-guidelines.md`:
-  - testar status code 200
-  - testar campos `status` e `service`
-  - garantir que a resposta é JSON válido
 
-Regras:
-- Rotas e schemas devem seguir `docs/routes-guidelines.md`.
-- Testes devem seguir `docs/testing-guidelines.md`.
-- Mostre o conteúdo completo dos arquivos criados/alterados.
+## 0. Regras gerais para qualquer prompt
 
----
+Sempre inclua (explícita ou implicitamente):
 
-### 3) Criar schema de erro, exceptions e handlers globais
+- Idioma: respostas **em português do Brasil (pt-BR)**.
+- Contexto local prioritário:
+  - `.specs/project/PROJECT.md`, `ROADMAP.md`, `STATE.md`
+  - `.specs/features/api-pesquisa-clima/spec.md`, `design.md`, `tasks.md`
+  - `docs/api-pesquisa-clima-prd.md`
+  - `docs/architecture-rules.md`
+  - `docs/routes-guidelines.md`
+  - `docs/error-handling.md`
+  - `docs/persistence-guidelines.md`
+  - `docs/testing-guidelines.md`
+  - `docs/checklists.md`
+- Context7 MCP:
+  - Para qualquer dúvida sobre **FastAPI, SQLAlchemy, httpx, pytest, IBGE, Brasil API, Open‑Meteo**, usar Context7 para consultar a documentação oficial (não inventar APIs nem parâmetros).
 
-Usando `architecture-rules.md` e `docs/error-handling.md`, implemente a infraestrutura de erros padronizados.
+Formato padrão de erro da API:
 
-Tarefas:
-- Criar `src/schemas/error.py` com o schema `ErrorResponse` exatamente como especificado em `docs/error-handling.md`.
-- Criar `src/core/exceptions.py` com as exceptions:
-  - `InvalidInputError`
-  - `NotFoundError`
-  - `ExternalServiceError`
-- Criar `src/core/handlers.py` com handlers FastAPI que:
-  - mapeiem `InvalidInputError` → HTTP 400 com `code="INVALID_INPUT"`.
-  - mapeiem `NotFoundError` → HTTP 404 com `code` apropriado (passado na exceção ou definido no handler).
-  - mapeiem `ExternalServiceError` → HTTP 503 com `code="EXTERNAL_SERVICE_ERROR"`.
-  - tratem exceções genéricas (`Exception`) como HTTP 500 com `code="INTERNAL_ERROR"`.
-- Registrar os handlers globais em `src/main.py`.
+```json
+{
+  "status": <http_status:int>,
+  "error_code": "<CÓDIGO_INTERNO:string>",
+  "message": "<mensagem em pt-BR>",
+  "details": null | { ... }
+}
+```
 
-Regras:
-- Sempre retornar JSON usando `ErrorResponse`.
-- Não retornar HTML padrão do FastAPI.
-- Seguir exatamente o contrato descrito em `docs/error-handling.md`.
-
-Saída:
-- Mostre os arquivos completos: `src/schemas/error.py`, `src/core/exceptions.py`, `src/core/handlers.py` e as mudanças em `src/main.py`.
 
 ---
 
-### 4) Criar modelo query_history + database + repositório
+## 1. Revisar consistência entre PRD, SPEC, DESIGN e docs
 
-Usando `architecture-rules.md` e `docs/persistence-guidelines.md`, implemente a camada de persistência básica.
+Use quando atualizar PRD ou alguma regra em `docs/` e quiser que a IA aponte incoerências antes de mexer em código.
+
+```text
+Quero que você atue como revisor técnico da documentação deste projeto,
+NÃO gerando novos arquivos ainda, apenas apontando ajustes necessários.
+
+Regra fixa:
+- Sempre usar português do Brasil (pt-BR) nas explicações.
+
+Contexto principal:
+- Projeto: .specs/project/PROJECT.md
+- Roadmap: .specs/project/ROADMAP.md
+- Memória do projeto: .specs/project/STATE.md
+- Especificação da feature: .specs/features/api-pesquisa-clima/spec.md
+- Design técnico: .specs/features/api-pesquisa-clima/design.md
+- PRD detalhado: docs/api-pesquisa-clima-prd.md
+- Regras técnicas:
+  - docs/architecture-rules.md
+  - docs/routes-guidelines.md
+  - docs/error-handling.md
+  - docs/persistence-guidelines.md
+  - docs/testing-guidelines.md
+  - docs/checklists.md
+
+Uso de documentação externa:
+- Se precisar de detalhes de frameworks/APIs (FastAPI, SQLAlchemy, httpx, pytest,
+  IBGE Localidades, Brasil API, Open‑Meteo), use o MCP Context7.
+- Não invente APIs ou comportamentos.
 
 Tarefas:
-- Implementar `src/core/database.py` com:
-  - criação do `engine` SQLAlchemy para SQLite
-  - `SessionLocal` (sessionmaker)
-  - função utilitária para obter sessão (padrão de dependência para FastAPI, se fizer sentido)
-- Implementar `src/models/query_history.py` com o modelo SQLAlchemy conforme especificação de campos em `docs/persistence-guidelines.md`.
-- Implementar `src/repositories/history_repository.py` com funções:
-  - `save_query_history(...)` para salvar um novo registro
-  - `list_history_by_city(city_name: str)` para buscar histórico por cidade
-  - (opcional) função para obter registros em ordem temporal para séries
+1) Ler TODOS esses arquivos e verificar:
+   - Consistência entre PRD ⇄ SPEC ⇄ DESIGN ⇄ PROJECT/ROADMAP.
+   - Se todos os endpoints planejados estão refletidos na SPEC e no design.
+   - Se regras importantes aparecem claramente:
+     - Validações de `nome_cidade` e `sigla_uf`.
+     - Erros 400, 404, 503 e 500 com o payload de erro padronizado.
+     - Uso de APIs públicas sem coordenadas fixas.
+     - Uso da tabela query_history para histórico e séries.
 
-Regras:
-- Não acessar o banco diretamente nas rotas.
-- Pensar na futura migração para PostgreSQL, seguindo os tipos sugeridos.
-- Seguir estritamente o que está em `docs/persistence-guidelines.md`.
+2) Me devolver um relatório em tópicos, em pt-BR, contendo:
+   - Pontos que estão OK e claros.
+   - Pontos faltando ou incoerentes, com indicação do arquivo e seção.
+   - Sugestões concretas de ajustes (arquivo + trecho + sugestão).
 
-Saída:
-- Mostre o conteúdo completo dos arquivos criados/alterados.
+3) Não reescreva ainda os arquivos.
+   - Apenas liste o que precisa ser ajustado, para eu decidir o que aplicar depois.
+```
+
 
 ---
 
-### 5) Criar endpoints de cidades (GET /api/v1/cidades/{sigla_uf}) + testes
+## 2. Executar uma task específica do `tasks.md` (fase Execute)
 
-Usando `architecture-rules.md`, `docs/routes-guidelines.md`, `docs/error-handling.md` e `docs/testing-guidelines.md`, implemente o fluxo de cidades.
+Prompt base para implementar **uma** task de `.specs/features/api-pesquisa-clima/tasks.md` por vez  
+(ex.: T01 – setup base da API e health, T02 – database, etc.).
 
-Tarefas:
-- Criar `src/services/city_service.py` que:
-  - valide `sigla_uf` usando utilitários em `src/utils/validators.py` (crie se necessário).
-  - consulte uma API pública (IBGE ou Brasil API) para listar cidades de uma UF.
-  - em caso de erro de entrada → lançar `InvalidInputError`.
-  - em caso de UF não encontrada → lançar `NotFoundError`.
-  - em caso de falha de API externa → lançar `ExternalServiceError`.
-- Criar `src/schemas/cidade.py` com os schemas de resposta para lista de cidades.
-- Criar `src/api/routes/cidades.py` com:
-  - rota `GET /api/v1/cidades/{sigla_uf}` seguindo `docs/routes-guidelines.md`.
-- Criar `tests/test_cidades.py` com testes:
-  - cenário 200 (UF válida, lista de cidades).
-  - cenário 400 (UF inválida).
-  - cenário 404 (UF não encontrada).
-  - cenário 503 (falha simulada na API externa).
+```text
+Use a skill tlc-spec-driven.
 
-Regras:
-- Rotas finas, serviços com a lógica.
-- Erros sempre em JSON usando `ErrorResponse`.
-- Testes seguindo `docs/testing-guidelines.md`.
+Regra fixa:
+- Código e comentários em português quando fizer sentido,
+  mantendo nomes de tipos, endpoints e identificadores em inglês.
+- Sempre rodar testes ao final da tarefa.
 
-Saída:
-- Mostre os arquivos completos criados/alterados.
+Contexto:
+- Projeto: .specs/project/PROJECT.md, ROADMAP.md, STATE.md
+- Feature: .specs/features/api-pesquisa-clima/spec.md
+- Design: .specs/features/api-pesquisa-clima/design.md
+- Tasks: .specs/features/api-pesquisa-clima/tasks.md
+- Guidelines técnicas:
+  - docs/architecture-rules.md
+  - docs/routes-guidelines.md
+  - docs/error-handling.md
+  - docs/persistence-guidelines.md
+  - docs/testing-guidelines.md
+  - docs/checklists.md
+
+Uso de documentação externa:
+- Para qualquer dúvida sobre FastAPI, SQLAlchemy, httpx, pytest,
+  IBGE Localidades, Brasil API ou Open‑Meteo, use o MCP Context7
+  para consultar a documentação oficial. Não invente APIs nem parâmetros.
+
+Tarefa a executar AGORA:
+- Implementar APENAS a seguinte task (copie aqui o bloco exato do tasks.md):
+
+[COLE AQUI O BLOCO DA TASK Txx, incluindo What/Where/Done when/Tests]
+
+Regras de execução:
+1) Antes de escrever código, liste de forma sucinta os passos que você vai seguir
+   para cumprir esta task, com base em "What", "Where", "Depends on", "Done when" e "Tests".
+
+2) Depois implemente os arquivos necessários em src/ e tests/,
+   seguindo os padrões definidos em docs/*-guidelines.md
+   (rotas finas, lógica em services, erros padronizados, testes bem isolados).
+
+3) Ao final:
+   - Execute os testes indicados em "Tests" (ex.: `pytest tests/test_health.py -q`).
+   - Confirme se todos os critérios de "Done when" foram atendidos.
+   - Liste claramente os arquivos criados/alterados.
+```
+
+Sugestão de ordem para uso prático:
+
+- T01 → setup base + `/health`.
+- T02 → `config` + `database`.
+- T03/T04/T05 → schemas + modelo + repositório.
+- T06–T11 → clients externos, services, rotas.
+- T12–T15 → erros, testes unitários e de integração.
+- T16–T17 → docs e limpeza final.
+
 
 ---
 
-### 6) Criar endpoint de clima (GET /api/v1/clima/{nome_cidade}) + histórico
+## 3. Quick fix / tarefa pequena fora do fluxo principal
 
-Usando todos os documentos (`architecture-rules.md`, `docs/routes-guidelines.md`, `docs/error-handling.md`, `docs/persistence-guidelines.md`, `docs/testing-guidelines.md`), implemente o fluxo de clima com persistência de histórico.
+Use quando quiser fazer uma mudança bem localizada (≤ 3 arquivos) sem passar pelo ciclo completo `Specify → Design → Tasks`.  
+Exemplos: ajustar uma mensagem de erro, renomear um campo de schema, corrigir um teste.
 
-Tarefas:
-- Criar/ajustar `src/services/weather_service.py` para:
-  - receber um `nome_cidade`.
-  - resolver cidade + coordenadas chamando o `CityService` (ou equivalente).
-  - consultar Open-Meteo usando latitude/longitude (sem coordenadas fixas em código).
-  - montar um objeto de domínio com dados de clima (temp, min, max, summary).
-  - chamar o repositório `history_repository` para salvar um registro em `query_history`.
-- Criar/ajustar `src/services/history_service.py` com:
-  - funções para buscar histórico por cidade usando o repositório.
-- Criar `src/schemas/clima.py` com o schema de resposta para o endpoint de clima.
-- Criar/ajustar `src/api/routes/clima.py` com:
-  - `GET /api/v1/clima/{nome_cidade}` seguindo padrões de validação, erro e uso de serviços.
-- Criar/ajustar `tests/test_clima.py` cobrindo:
-  - cenário 200 (clima encontrado, histórico salvo).
-  - cenário 400 (nome_cidade inválido).
-  - cenário 404 (cidade não encontrada).
-  - cenário 503 (falha em API externa).
+```text
+Quero fazer uma correção pequena e localizada neste projeto, em quick mode.
 
-Regras:
-- Não hardcodar latitude/longitude.
-- Persistir toda consulta bem-sucedida em `query_history`.
-- Usar exceptions/handlers padronizados para erros.
+Regra fixa:
+- Sempre responder em português do Brasil (pt-BR).
+- Não alterar a estrutura de `.specs/` nem o design geral da feature.
 
-Saída:
-- Mostre o conteúdo completo dos arquivos criados/alterados.
+Contexto relevante:
+- Projeto e feature:
+  - .specs/project/PROJECT.md, ROADMAP.md, STATE.md
+  - .specs/features/api-pesquisa-clima/spec.md, design.md, tasks.md
+- Regras técnicas:
+  - docs/architecture-rules.md
+  - docs/routes-guidelines.md
+  - docs/error-handling.md
+  - docs/persistence-guidelines.md
+  - docs/testing-guidelines.md
 
----
-
-### 7) Criar endpoints de histórico e série temporal + testes
-
-Usando os mesmos documentos de arquitetura, rotas, erros, persistência e testes, implemente os endpoints de histórico e série.
+Mudança desejada (explique aqui em 1–2 frases):
+- Exemplo: “Atualizar a mensagem de erro do endpoint de clima quando cidade não for encontrada.”
 
 Tarefas:
-- Criar/ajustar `src/services/history_service.py` e `src/services/series_service.py` com:
-  - funções para buscar histórico por cidade.
-  - funções para montar série temporal (lista de pontos com `queried_at`, `temperature`, etc.).
-- Criar/ajustar `src/schemas/historico.py` e `src/schemas/serie.py`.
-- Criar `src/api/routes/historico.py` e `src/api/routes/serie.py` com:
-  - `GET /api/v1/historico/{nome_cidade}`
-  - `GET /api/v1/serie/{nome_cidade}`
-  seguindo os padrões de `docs/routes-guidelines.md`.
-- Criar/ajustar `tests/test_historico.py` e `tests/test_serie.py` cobrindo:
-  - cenário 200 com dados.
-  - cenário 404 quando não houver registros para a cidade.
-  - cenários de erro de entrada e erro de serviço, se aplicável.
+1) Identificar quais arquivos precisam ser alterados (máx. 3 arquivos).
+2) Propor o diff mínimo necessário para implementar essa correção, mantendo compatibilidade com:
+   - SPEC e DESIGN
+   - formato de erro (status, error_code, message, details)
+   - testes existentes
+3) Mostrar o diff em blocos (antes → depois) para eu revisar.
 
-Regras:
-- Lógica de agregação deve ficar nos serviços.
-- Rotas apenas orquestram schemas, serviços e erros.
-
-Saída:
-- Mostre o conteúdo completo dos arquivos criados/alterados.
+Não criar novas features nem mexer em tasks maiores; tratar apenas essa correção pontual.
+```
+```
