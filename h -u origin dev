@@ -1,0 +1,116 @@
+[33mcommit dc5670ecf47ff72c6913dbdb7ccce7b0e8674471[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m)[m
+Merge: 24a1cee 9e69905
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sun May 24 18:28:38 2026 -0300
+
+    Merge branch 'feature/T01-setup-api-health' into dev
+
+[33mcommit 9e69905b30649b58f0821fdaae9719655d456a46[m[33m ([m[1;32mfeature/T01-setup-api-health[m[33m)[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sun May 24 18:28:27 2026 -0300
+
+    feat(T01): setup FastAPI app and health endpoint
+
+[33mcommit 24a1cee18848c024186386fcfbb0e7835e7eb42c[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 21:29:23 2026 -0300
+
+    atualiza documentação de prompts para desenvolvimento com IA na API de Pesquisa em Clima
+
+[33mcommit 6fa45dfe9497218474dc643df26f687dd4dd2eab[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 21:23:32 2026 -0300
+
+    adiciona arquivo de tarefas para implementação da feature api-pesquisa-clima
+
+[33mcommit e193122b90411ac43d38aeabe59e150d13277f36[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 21:23:27 2026 -0300
+
+    adiciona documentação de design para a API de pesquisa em clima
+
+[33mcommit 79a351145bfafc8424e18f9660b98e1f3f21f697[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 21:09:07 2026 -0300
+
+    feat: Add state management and task management documentation
+    
+    - Introduced state management documentation for tracking decisions, blockers, lessons learned, quick tasks, deferred ideas, and todos.
+    - Added task management guidelines emphasizing granular task creation, dependencies, execution plans, and validation processes.
+    - Created validation and verification processes for ensuring implementation meets specifications and coding principles.
+    - Developed a comprehensive plan for a climate research API, detailing objectives, technical proposals, functional scope, architecture requirements, and execution flow.
+    - Updated architecture and error handling documentation to reflect new error response formats and status codes.
+    - Enhanced persistence guidelines to ensure proper handling of historical data and error responses.
+    - Revised routes guidelines to clarify expected responses for various endpoints.
+
+[33mcommit a218248b9694ab51e76a9e764976f03dc6ce3843[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:34 2026 -0300
+
+    adiciona diretrizes de testes automatizados para a API de pesquisa em clima
+
+[33mcommit c634322be1fc0642eacff15c836c2f4f6bebcfe1[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:30 2026 -0300
+
+    adiciona diretrizes detalhadas para rotas da API de pesquisa em clima
+
+[33mcommit 3c710a7565c20aad24a5a9027bc365d9e732f973[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:24 2026 -0300
+
+    adiciona prompts para uso com Copilot e estrutura inicial da API de Pesquisa em Clima
+
+[33mcommit 6f0e44928c8220e3ef4cf04320c62c64be27354e[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:18 2026 -0300
+
+    adiciona diretrizes de persistência para o modelo query_history e migração para PostgreSQL
+
+[33mcommit 4f13f473f3f712acb50e832dbc32f97f74e7ee97[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:12 2026 -0300
+
+    adiciona documento de tratamento de erros com diretrizes para respostas em JSON e exceções personalizadas
+
+[33mcommit cb3ed32821d2837304787feb586605cf1e1cf8ef[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:06 2026 -0300
+
+    adiciona checklists para desenvolvimento assistido por IA
+
+[33mcommit 6f959141b771664a05e4795c3d6d943743b9a7e0[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:53:01 2026 -0300
+
+    adiciona diretrizes de rotas para a API de Pesquisa em Clima
+
+[33mcommit 168fc7767215ccafd02a8b5120790af58d06d5d3[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:52:56 2026 -0300
+
+    adiciona instruções para uso do Context7 na documentação do projeto
+
+[33mcommit 4bff715255511511a9d8896e513cbe4df74bd0e5[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:52:49 2026 -0300
+
+    adiciona arquivo CHANGELOG.md com padrão para documentar mudanças do projeto
+
+[33mcommit b40f63a81110ee1b09c82e37e18ed38e2c29c3a7[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:52:43 2026 -0300
+
+    adiciona arquivo .gitignore com regras para dependências, variáveis de ambiente, logs e configurações do sistema
+
+[33mcommit 58b7fd3a32f6037b73061c5d04181d8d63b28623[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 19:52:37 2026 -0300
+
+    adiciona arquivo de regras de arquitetura para IA
+
+[33mcommit 023bb0222bbe8f404ccf0062db1e8c2d367ffaa4[m
+Author: M Daniel  Dantas <contatomarcosdgomes@gmail.com>
+Date:   Sat May 23 12:12:01 2026 -0300
+
+    first commit
