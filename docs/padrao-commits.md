@@ -11,67 +11,74 @@ A padronização existe para melhorar comunicação entre pessoas e ferramentas,
 Ela também apoia automações, versionamento, rastreabilidade por tarefa, preparação de release e correções emergenciais em produção.[1][2][5]
 
 ## Convenção de commits
-
+Nesse modelo, `main` representa a linha de produção, `dev` representa a linha de integração de desenvolvimento, `feature/*` concentra novas funcionalidades, `release/*` prepara versões e `hotfix/*` trata correções urgentes saídas de produção.[2][5][12]
 O padrão adotado para mensagens é:
 
 ```text
 <tipo>(<escopo-opcional>): <resumo>
+| `dev` | Integração contínua do próximo ciclo de desenvolvimento | `main` na inicialização do fluxo | Recebe `feature/*`, `release/*` e `hotfix/*` [2][12] |
+
+### 1. Partir de `dev`
+
+Toda nova funcionalidade deve nascer a partir da branch `dev`, porque ela é a branch de integração das próximas entregas.[2][12]
+
+```bash
+git checkout dev
+git pull origin dev
+git checkout -b feature/T02-add-weather-search
 ```
-
-Esse formato segue a especificação Conventional Commits, na qual o `tipo` é obrigatório, o `escopo` é opcional e o resumo deve descrever de forma objetiva a ação realizada.[1][6]
-
-### Estrutura
-
-- `tipo`: classifica a natureza da alteração, como `feat`, `fix`, `docs` ou `refactor`.[1][7]
-- `escopo`: indica o módulo, pasta, contexto ou funcionalidade afetada, como `auth`, `api`, `health`, `tests` ou `config`.[6][7]
 - `resumo`: frase curta, direta e escrita no imperativo, descrevendo o que o commit faz.[8][4]
+### 3. Integrar de volta em `dev`
 
-### Exemplos válidos
+Quando a feature estiver validada, ela deve ser mergeada em `dev`, preferencialmente com histórico claro e validações executadas antes do merge.[2][13]
 
-```text
-feat(api): add health endpoint
-fix(auth): validate expired token
-refactor(config): simplify settings loader
-test(health): add health endpoint tests
-docs(readme): update setup instructions
-chore(deps): update fastapi version
+Fluxo simplificado:
+
+```bash
+git checkout dev
+git pull origin dev
+git merge --no-ff feature/T02-add-weather-search
+git push origin dev
+```
+Quando a release estiver aprovada, ela deve ser mergeada em `main` e também de volta em `dev`, para garantir que correções feitas na estabilização não se percam no fluxo futuro.[2][5][12]
+```bash
+git checkout main
+git pull origin main
+git merge --no-ff release/0.1.0
+git push origin main
+
+git checkout dev
+git pull origin dev
+git merge --no-ff release/0.1.0
+git push origin dev
+```
+| `test` | Criação ou ajuste de testes sem alterar regra de negócio | `test(api): add forecast endpoint tests` [9][7] |
+### 6. Corrigir produção com `hotfix/*`
+
+Se houver erro crítico em produção, a correção deve nascer de `main` em uma branch `hotfix/*`, nunca diretamente de `dev`.[2][5][14]
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b hotfix/0.1.1-health-timeout
 ```
 
-Esses exemplos seguem a convenção porque começam com um tipo reconhecido, usam escopo quando útil e descrevem a mudança com verbo de ação.[1][9]
+Depois da correção, o hotfix deve ser mergeado em `main` e também em `dev`, para que a correção de produção continue presente no fluxo de desenvolvimento.[2][5][14]
 
-## Tipos permitidos
+```bash
+git checkout main
+git merge --no-ff hotfix/0.1.1-invalid-health-status
+git push origin main
 
-| Tipo | Quando usar | Exemplo |
-|---|---|---|
-| `feat` | Nova funcionalidade para o sistema | `feat(api): add weather search endpoint` [1][7] |
-| `fix` | Correção de bug ou comportamento incorreto | `fix(cache): prevent stale response reuse` [1][7] |
-| `docs` | Alteração apenas em documentação | `docs(readme): document local setup` [9][7] |
-| `refactor` | Reorganização interna sem mudar comportamento funcional | `refactor(core): simplify config loading` [9][7] |
-| `test` | Criação ou ajuste de testes sem alterar regra de negócio | `test(api): add forecast endpoint tests` [9][7] |
-| `chore` | Mudanças operacionais, manutenção ou tooling | `chore(gitignore): ignore python cache files` [9][7] |
-| `ci` | Mudanças em pipelines ou workflows | `ci(github): add pytest workflow` [9][7] |
-| `build` | Mudanças de build, empacotamento ou dependências de build | `build(poetry): adjust script entrypoint` [7] |
-| `perf` | Melhorias de performance | `perf(api): reduce response serialization overhead` [9][7] |
-| `style` | Formatação sem alteração funcional | `style(lint): normalize import spacing` [9][6] |
-| `revert` | Reversão de commit anterior | `revert(api): revert health response contract` [7] |
-
-## Regras de escrita
-
-### 1. Escrever no imperativo
-
-A linha principal do commit deve ser escrita como comando, como `add`, `fix`, `remove`, `rename` ou `update`, porque a leitura implícita é “se aplicado, este commit vai...”.[8][10]
-
-### 2. Resumo curto e específico
-
-O resumo deve ser curto, objetivo e preferencialmente ficar em torno de 50 caracteres, deixando detalhes adicionais para o corpo quando necessário.[8][11]
-
-### 3. Sem ponto final
-
+git checkout dev
+git merge --no-ff hotfix/0.1.1-invalid-health-status
+git push origin dev
+```
 A linha de assunto não deve terminar com ponto final, porque funciona como um título curto do commit.[8][4]
-
-### 4. Um commit, uma intenção
-
-Cada commit deve representar uma mudança coesa e única, facilitando revisão, rollback e rastreabilidade.[11]
+- Nunca desenvolver funcionalidade direto em `dev`; usar sempre `feature/*`.[2][13]
+- Toda `feature/*` nasce de `dev` e volta para `dev`.[2][12]
+- Toda `release/*` nasce de `dev` e volta para `main` e `dev`.[2][5]
+- Todo `hotfix/*` nasce de `main` e volta para `main` e `dev`.[2][5][14]
 
 ## Padrão com ID de tarefa
 

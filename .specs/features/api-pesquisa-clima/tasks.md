@@ -1,5 +1,14 @@
 # Tasks: api-pesquisa-clima
 
+> Nota: antes de começar qualquer tarefa, crie uma branch de feature a partir de `dev` seguindo a convenção do projeto (ex.: `feature/T04-query-history`). Exemplo rápido:
+
+```bash
+git checkout dev
+git pull --ff-only origin dev
+git checkout -b feature/T04-query-history
+```
+
+
 Este arquivo lista tarefas atômicas (cada uma adequada para um commit/PR único) para implementar a feature `api-pesquisa-clima`. Todas as tarefas estão em português (pt-BR).
 
 Formato de cada tarefa:
