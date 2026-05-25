@@ -20,10 +20,14 @@ quando pedir para a ia atualizar esse arquivo, use instruções como:
 ## [unreleased]
 
 ### adicionado
-- (aqui vão entrar mudanças que ainda não fechei como uma versão. peça para a ia substituir este texto por itens reais quando necessário.)
+- Modelo SQLAlchemy `query_history` em `src/models/query_history.py` (Task T04).
+- Teste unitário `tests/test_models.py` para validar persistência em SQLite in-memory.
+- Atualização do manual de padronização de commits `docs/padrao-commits.md` para usar `dev` como branch de integração.
+- Nota de fluxo adicionada em `.specs/features/api-pesquisa-clima/tasks.md` instruindo a criar `feature/*` a partir de `dev` antes de codar.
 
 ### alterado
-- (use esta seção para mudanças em comportamento existente, refactors, etc.)
+- Fluxo de branches: alinhamento e limpeza do histórico entre `dev` e `main` (sincronização de merges recentes).
+- Pequenas correções e normalizações em exemplos de comandos e padrões de branch nos documentos do projeto.
 
 ### removido
 - (use esta seção se algo importante foi removido.)
